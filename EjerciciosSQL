@@ -1,0 +1,15 @@
+Create Table LEGAJOS(
+	ID integer unique not null,
+	LEGAJO char(6) not null,
+	NRO_DOCUMENTO varchar(20) not null,
+	FECHA_INGRESO datetime not null,
+	PRIMARY KEY (ID)
+	);
+
+create table ALUMNOS(
+	NRO_DOCUMENTO varchar(20) not null,
+	primary key(NRO_DOCUMENTO),
+	APELLIDO varchar(100) not null,
+	NOMBRE varchar(100) not null
+
+);
