@@ -1,0 +1,295 @@
+Use Soja
+create table Campania(
+	IDCampana integer not null identity(1,1),
+	FechaInicio datetime not null,
+	FechaFin datetime not null,
+	Lote integer not null,
+	IDCultivo integer not null,
+	Observaciones text
+	primary key (IDCampana)
+);
+
+create table Fumigacion(
+	IDFumigacion integer not null identity(1,1),
+	IDCampana integer not null, 
+	FechaInicio datetime not null,
+	FechaFin datetime not null,
+	IDInsumo integer not null,
+	CantidadInsumos integer not null,
+	IDMaquinaria integer not null,
+	IDMaquinista integer not null,
+	IDLote integer not null,
+	Hectareas integer not null,
+	PrecioHectarea decimal not null, 
+	Observaciones varchar,
+	primary key (IDFumigacion),
+);
+
+create table Fertilizacion(
+	IDFertilizacion integer not null identity(1,1),
+	IDCampana integer not null,
+	FechaInicio datetime not null,
+	FechaFin datetime not null,
+	IDMaquinaria integer not null,
+	IDMaquinista integer not null,
+	IDInsumo integer not null,
+	CantidadInsumos integer not null,
+	IDLote integer not null,
+	Hectareas integer not null, 
+	PrecioHectarea decimal not null, 
+	Observaciones varchar,
+	primary key (IDFertilizacion),
+);
+
+create table Desmalezado(
+	IDDesmalezado integer not null identity(1,1),
+	IDCampana integer not null,
+	FechaInicio datetime not null,
+	FechaFin datetime not null,
+	IDLote integer not null,
+	IDMaquinaria integer not null,
+	IDMaquinista integer not null,
+	Hectareas integer not null, 
+	Observaciones varchar,
+	primary key (IDDesmalezado)
+);
+
+Create table Siembra(
+	IDSiembra integer not null identity(1,1),
+	IDCampana integer not null,
+	FechaInicio datetime not null,
+	FechaFin datetime not null,
+	IDLote integer not null,
+	Semilla integer not null,
+	CantSemillas integer not null,
+	IDMaquinaria integer not null,
+	IDMaquinista integer not null,
+	Hectareas integer not null, 
+	Observaciones varchar,
+	primary key (IDSiembra)
+);
+
+Create table Cosechas(
+	IDCosechas integer not null identity(1,1),
+	IDCampana integer not null,
+	FechaInicio datetime not null,
+	FechaFin datetime not null,
+	IDLote integer not null,
+	Semilla integer not null,
+	IDMaquinaria integer not null,
+	IDMaquinista integer not null,
+	Hectareas integer not null, 
+	RendHectarea decimal not null,
+	Observaciones varchar
+	primary key (IDCosechas)
+);
+
+Create table Analisis(
+	IDAnalisis integer not null identity(1,1),
+	IDCampana integer not null,
+	Fecha datetime not null,
+	IDResponsable integer not null,
+	IDTipoAnalisis integer not null,
+	IDLaboratorio integer not null, 
+	Descripcion varchar,
+	primary key (IDAnalisis)
+
+);
+
+create table Insumos(
+	IDInsumos integer not null identity(1,1),
+	Nombre varchar(20) not null, 
+	Marca varchar(20) not null,
+	Categoria integer not null, 
+	Precio decimal not null, 
+	Proveedor integer not null, 
+	Descripcion varchar not null
+	primary key (IDInsumos)
+);
+
+create table Semillas(
+	IDSemillas integer not null identity(1,1),
+	Variedad varchar(20) not null, 
+	Calidad varchar(20) not null,
+	Categoria integer not null, 
+	Precio decimal not null, 
+	Proveedor integer not null, 
+	Descripcion varchar not null
+	primary key (IDSemillas)
+);
+
+create table RemitosInsumos(
+	IDRemito integer not null identity(1,1), 
+	Fecha datetime not null, 
+	Numero integer not null, 
+	IDProveedor integer not null, 
+	IDCuenta integer not null,
+	IDInsumo integer not null, 
+	Precio decimal not null, 
+	Cantidad integer not null,
+	primary key (IDRemito)
+);
+
+create table RemitosSemillas(
+	IDRemito integer not null identity(1,1), 
+	Fecha datetime not null, 
+	Numero integer not null, 
+	IDProveedor integer not null, 
+	IDCuenta integer not null,
+	IDSemilla integer not null, 
+	Precio decimal not null, 
+	Cantidad integer not null,
+	primary key (IDRemito)
+);
+
+Create Table Proveedores(
+	IDProveedores integer not null,
+	Nombre Varchar(20) not null,
+	Empresa varchar(20) not null, 
+	Domicilio varchar(20) not null, 
+	DNI  varchar(10) not null, 
+	Telefono varchar(20) not null, 
+	Celular varchar(20) not null, 
+	Provincia varchar(20) not null, 
+	Ciudad varchar(20) not null, 
+	Cuit varchar(20) not null, 
+	Email varchar(20) not null, 
+	primary key (IDProveedores)
+);
+
+
+create table Campos(
+	IDCampo integer not null identity(1,1),
+	Nombre varchar(20) not null,
+	Ubicacion varchar(20) not null,
+	Provincia varchar(20) not null,
+	Ciudad varchar(20) not null,
+	Departamento varchar(20) not null,
+	Descripcion varchar not null,
+	primary key (IDCampo)
+);
+
+create table Lotes(
+	IDLote integer not null identity(1,1),
+	IDCampo integer not null,
+	Ubicacion varchar(20) not null,
+	NumeroLote integer not null,
+	Hectareas integer not null,
+	Descripcion text,
+	primary key (IDLote)
+);
+
+Create Table Maquinaria(
+	IDMaquina integer not null identity(1,1),
+	Categoria varchar not null,
+	Marca varchar(20) not null,
+	Modelo varchar(20) not null,
+	primary key (IDMaquina)
+);
+
+Create Table Maquinista(
+	IDMaquinista integer not null identity(1,1),
+	Nombre varchar(20) not null,
+	Domicilio varchar(20) not null,
+	DNI varchar(20) not null,
+	Provincia varchar(20) not null,
+	Ciudad varchar(20) not null,
+	Telefono varchar(20) not null,
+	Celular varchar(20) not null,
+	Email varchar(20) not null,
+	primary key (IDMaquinista)
+);
+
+Create Table Responsables(
+	IDResponsable integer not null identity(1,1),
+	Nombre varchar(20) not null,
+	Domicilio varchar(20) not null,
+	DNI varchar(20) not null,
+	Provincia varchar(20) not null,
+	Ciudad varchar(20) not null,
+	Telefono varchar(20) not null,
+	Cuit varchar(20) not null,
+	Celular varchar(20) not null,
+	Email varchar(20) not null,
+	primary key (IDResponsable)
+);
+
+create table Laboratorios(
+	IDLaboratorio integer not null identity(1,1),
+	Nombre varchar(20) not null,
+	Domicilio varchar(20) not null,
+	Telefono varchar(20) not null,
+	Provincia varchar(20) not null,
+	Ciudad varchar(20) not null,
+	Email varchar(20) not null,
+	primary key (IDLaboratorio)
+);
+
+
+create table Cuentas(
+	IDCuenta integer not null identity(1,1),
+	Nombre varchar(20) not null,
+	Domicilio varchar(20) not null,
+	DNI varchar(20) not null,
+	Provincia varchar(20) not null,
+	Ciudad varchar(20) not null,
+	Telefono varchar(20) not null,
+	Celular varchar(20) not null,
+	Cuit varchar(20) not null,
+	Email varchar(20) not null,
+	primary key (IDCuenta)
+);
+
+Create Table Cultivos(
+IDCultivo  integer not null identity(1,1),
+Nombre integer not null,
+primary key (IDCultivo)
+);
+
+
+
+
+alter table Campania add foreign key (IDCultivo) references Cultivos(IDCultivo)
+
+alter table Fumigacion add foreign key (IDCampana) references Campania(IDCampana)
+alter table Fumigacion add foreign key (IDInsumo) references Insumos(IDInsumos)
+alter table Fumigacion add foreign key (IDMaquinaria) references Maquinaria(IDMaquina)
+alter table Fumigacion add foreign key (IDMaquinista) references Maquinista(IDMaquinista)
+alter table Fumigacion add foreign key (IDLote) references Lotes(IDLote)
+
+alter table Fertilizacion add foreign key (IDCampana) references Campania(IDCampana)
+alter table Fertilizacion add foreign key (IDMaquinaria) references Maquinaria(IDMaquina)
+alter table Fertilizacion add foreign key (IDMaquinista) references Maquinista(IDMaquinista)
+alter table Fertilizacion add foreign key (IDInsumo) references Insumos(IDInsumos)
+alter table Fumigacion add foreign key (IDLote) references Lotes(IDLote)
+
+alter table Desmalezado add foreign key (IDCampana) references Campania(IDCampana)
+alter table Fumigacion add foreign key (IDLote) references Lotes(IDLote)
+alter table Desmalezado add foreign key (IDMaquinaria) references Maquinaria(IDMaquina)
+alter table Desmalezado add foreign key (IDMaquinista) references Maquinista(IDMaquinista)
+
+alter table Siembra add foreign key (IDCampana) references Campania(IDCampana)
+alter table Siembra add foreign key (IDLote) references Lotes(IDLote)
+alter table Siembra add foreign key (Semilla) references Semillas(IDSemillas)
+alter table Siembra add foreign key (IDMaquinaria) references Maquinaria(IDMaquina)
+alter table Siembra add foreign key (IDMaquinista) references Maquinista(IDMaquinista)
+
+alter table Cosechas add foreign key (IDCampana) references Campania(IDCampana)
+alter table Cosechas add foreign key (IDLote) references Lotes(IDLote)
+alter table Cosechas add foreign key (Semilla) references Semillas(IDSemillas)
+alter table Cosechas add foreign key (IDMaquinaria) references Maquinaria(IDMaquina)
+alter table Cosechas add foreign key (IDMaquinista) references Maquinista(IDMaquinista)
+
+alter table Analisis add foreign key (IDCampana) references Campania(IDCampana)
+alter table Analisis add foreign key (IDResponsable) references Responsables(IDResponsable)
+alter table Analisis add foreign key (IDLaboratorio) references Laboratorios(IDLaboratorio)
+
+alter table RemitosInsumos add foreign key (IDProveedor) references Proveedores(IDProveedores)
+alter table RemitosInsumos add foreign key (IDCuenta) references Cuentas(IDCuenta)
+alter table RemitosInsumos add foreign key (IDInsumo) references Insumos(IDInsumos)
+
+alter table RemitosSemillas add foreign key (IDProveedor) references Proveedores(IDProveedores)
+alter table RemitosSemillas add foreign key (IDCuenta) references  Cuentas(IDCuenta)
+alter table RemitosSemillas add foreign key (IDSemilla) references Semillas(IDSemillas)
+
+alter table Lotes add foreign key (IDCampo) references Campos(IDCampo)
