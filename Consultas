@@ -1,0 +1,190 @@
+/*
+1 Obtener una lista de todos los productos indicando para cada uno su idfab, idproducto, 
+descripción, precio y precio con I.V.A. incluido (es el precio anterior aumentado en un 16%).
+*/
+
+select IDfab, IDProducto, Descripcion, Precio, (Precio * 0.16) + Precio As PrecioIVA
+from
+productos
+
+/*
+2 De cada pedido queremos saber su número de pedido, fab, producto, cantidad, precio unitario e importe.
+*/
+Select NumPedido, Fab, Producto, Cant, Importe as PrecUnitario, Importe * Cant as Importe_Final
+from
+Pedido
+
+/*
+3 Listar de cada empleado su nombre, nº de días que lleva trabajando en la empresa y su año de nacimiento 
+(suponiendo que este año ya ha cumplido años).
+*/
+
+Select datediff(DAY, contrato,getdate()) as DiasTrab
+from Empleados
+
+/*
+4 Obtener la lista de los clientes agrupados por código de representante asignado, 
+visualizar todas la columnas de la tabla.
+*/
+
+select *
+from Clientes
+group by RepCli
+/*
+5 Obtener las oficinas ordenadas por orden alfabético de región y dentro de cada 
+región por ciudad, si hay más de una oficina en la misma ciudad, aparecerá primero 
+la que tenga el número de oficina mayor.
+*/
+
+select * from Oficinas
+order by Oficinas.Region, Oficinas.Ciudad, Oficinas.Oficina desc
+
+
+/*
+6 Obtener los pedidos ordenados por fecha de pedido.
+*/
+select * from Pedido
+order by Pedido.FechaPedido
+ 
+ 
+/*
+SELECCION DE FILAS
+7 Listar las cuatro líneas de pedido más caras (las de mayor importe).
+*/
+select top 4 *
+from Pedido
+order by Pedido.Importe desc
+
+
+/*
+8 Obtener las mismas columnas que en el ejercicio 2 pero sacando unicamente 
+las 5 líneas de pedido de menor precio unitario.
+*/
+Select top 5 NumPedido, Fab, Producto, Cant, Importe as PrecUnitario, Importe * Cant as Importe_Final 
+from Pedido
+order by PrecUnitario
+
+
+
+/*
+9 Listar toda la información de los pedidos de marzo.
+*/
+select  * 
+from Pedido
+where Pedido.FechaPedido between '01/04/2013' and '30/04/2013'
+
+
+/*
+10 Listar los números de los empleados que tienen una oficina asignada.
+*/
+select NumEmpleado
+from Empleados
+where Empleados.NumEmpleado is not null
+
+
+
+/*
+11 Listar los números de las oficinas que no tienen director.
+*/
+select Oficina
+from Oficinas
+where Oficinas.Dir is null
+
+
+/*
+12 Listar los datos de las oficinas de las regiones del norte y del este 
+(tienen que aparecer primero las del norte y después las del este).
+*/
+
+select *
+From Oficinas
+where Oficinas.Region = 'norte' or  Oficinas.Region = 'este'
+order by Oficinas.Region desc
+
+
+
+/*
+13 Listar los empleados de nombre Julia.
+*/
+select *
+from Empleados
+where Empleados.Nombre = 'julia'
+
+
+/*
+14 Listar los productos cuyo idproducto acabe en x.
+*/
+Select *
+from Productos
+where Productos.IDProducto like '%x'
+
+
+-- CONSULTAS MULTITABLAS
+
+/*
+1 Listar las oficinas del este indicando para cada una de ellas su número, 
+ciudad, números y nombres de sus empleados. Hacer una versión en la que 
+aparecen sólo las que tienen empleados, y hacer otra en las que aparezcan 
+las oficinas del este que no tienen empleados.
+*/
+
+Select Empleados.NumEmpleado, Empleados.Nombre, Oficinas.Ciudad, Oficinas.Oficina
+from  Empleados inner join Oficinas on (Empleados.Oficina = Oficinas.Oficina)
+where Oficinas.Region = 'este'
+
+
+/*
+2 Listar los pedidos mostrando su número, importe, nombre del cliente,y el límite 
+de crédito del cliente correspondiente (todos los pedidos tienen cliente y representante).
+*/ --NO SALE
+
+select Pedido.NumPedido, Pedido.Importe, Clientes.Nombre, Clientes.LimiteCredito, Empleados.Nombre as Rep
+from Pedido inner join Clientes on (Clientes.NumClie = Pedido.Clie) inner join
+Empleados on (Clientes.RepCli = Empleados.NumEmpleado)
+
+
+ 
+/*
+3 Listar los datos de cada uno de los empleados, la ciudad y región en donde trabaja.
+*/
+select Empleados.NumEmpleado, Empleados.Nombre, Empleados.Edad, Oficinas.Ciudad, Oficinas.Region
+from Empleados inner join Oficinas on (Oficinas.Oficina = Empleados.Oficina)
+
+ 
+/*
+4 Listar las oficinas con objetivo superior a 600.000 pts indicando para cada una de 
+ellas el nombre de su director.
+*/
+select Oficinas.Oficina, Oficinas.Ciudad,Oficinas.Region, Oficinas.Objetivos, Empleados.Nombre
+from Oficinas inner join Empleados on (Empleados.NumEmpleado = Oficinas.Dir)
+where Oficinas.Objetivos > 600000
+
+ 
+/*
+5 Listar los pedidos superiores a 25.000 pts, incluyendo el nombre del empleado que tomó 
+el pedido y el nombre del cliente que lo solicitó.
+*/
+Select Pedido.FechaPedido, Pedido.Importe, Pedido.Producto, Clientes.Nombre, Empleados.Nombre
+From Pedido inner join Clientes on (Clientes.NumClie = Pedido.Clie) 
+inner join Empleados on (Empleados.NumEmpleado = Pedido.Rep)
+where Pedido.Importe > 25000
+
+ 
+/*
+6 Hallar los empleados que realizaron su primer pedido el mismo día en que fueron contratados.
+*/
+select Empleados.Nombre
+from Pedido inner join Empleados on (Pedido.Rep = Empleados.NumEmpleado)
+where Empleados.Contrato = Pedido.FechaPedido
+ 
+/*
+7 Listar los empleados con una cuota superior a la de su jefe; para cada 
+empleado sacar sus datos y el número, nombre y cuota de su jefe.
+*/
+
+
+ 
+/*
+8 Listar los códigos de los empleados que tienen una línea de pedido superior a 
+10.000 ptas o que tengan una cuota inferior a 10.000 pts.
+*/
