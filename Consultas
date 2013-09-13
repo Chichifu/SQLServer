@@ -138,11 +138,8 @@ where Oficinas.Region = 'este'
 de crédito del cliente correspondiente (todos los pedidos tienen cliente y representante).
 */ --NO SALE
 
-select Pedido.NumPedido, Pedido.Importe, Clientes.Nombre, Clientes.LimiteCredito, Empleados.Nombre as Rep
-from Pedido inner join Clientes on (Clientes.NumClie = Pedido.Clie) inner join
-Empleados on (Clientes.RepCli = Empleados.NumEmpleado)
-
-
+select Pedido.NumPedido, Pedido.Importe, Clientes.Nombre, Clientes.LimiteCredito
+from Pedido inner join Clientes on (Pedido.Clie = Clientes.NumClie)
  
 /*
 3 Listar los datos de cada uno de los empleados, la ciudad y región en donde trabaja.
@@ -164,7 +161,7 @@ where Oficinas.Objetivos > 600000
 5 Listar los pedidos superiores a 25.000 pts, incluyendo el nombre del empleado que tomó 
 el pedido y el nombre del cliente que lo solicitó.
 */
-Select Pedido.FechaPedido, Pedido.Importe, Pedido.Producto, Clientes.Nombre, Empleados.Nombre
+Select Pedido.FechaPedido, Pedido.Importe, Pedido.Producto, Clientes.Nombre AS NombreCliente, Empleados.Nombre as NombreEmpleado
 From Pedido inner join Clientes on (Clientes.NumClie = Pedido.Clie) 
 inner join Empleados on (Empleados.NumEmpleado = Pedido.Rep)
 where Pedido.Importe > 25000
@@ -176,15 +173,18 @@ where Pedido.Importe > 25000
 select Empleados.Nombre
 from Pedido inner join Empleados on (Pedido.Rep = Empleados.NumEmpleado)
 where Empleados.Contrato = Pedido.FechaPedido
- 
-/*
-7 Listar los empleados con una cuota superior a la de su jefe; para cada 
-empleado sacar sus datos y el número, nombre y cuota de su jefe.
-*/
-
 
  
 /*
-8 Listar los códigos de los empleados que tienen una línea de pedido superior a 
+7 Listar los códigos de los empleados que tienen una línea de pedido superior a 
 10.000 ptas o que tengan una cuota inferior a 10.000 pts.
 */
+select Pedido.Rep as Resultado
+from Pedido
+where Pedido.Importe > 10000
+
+union
+
+select Empleados.NumEmpleado as Resultado
+from Empleados 
+where Empleados.Cuota < 10000
